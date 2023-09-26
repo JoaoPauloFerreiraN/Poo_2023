@@ -14,10 +14,9 @@ public class Dados {
         return valor;
     }
 
-    @Override
-    public String toString() {
-        return "Dados{" +
-                "valor=" + valor +
-                '}';
+    public void setValor(int valor) {
+        this.valor = valor;
     }
+
+   
 }

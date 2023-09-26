@@ -1,6 +1,6 @@
 public class JogoGeneral {
     private Dados [] d;
-    private int [] jogadas;
+    int [] jogadas;
 
     public JogoGeneral(){
         this.d = new Dados[5];

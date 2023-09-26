@@ -5,17 +5,17 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         int opcao = 0;
 
-        JogoGeneral j = new JogoGeneral();
-       
-       while(true){    
-        j.rolarDados();
-        j.listarDados();
-
-        opcao = sc.nextInt();
-
-        System.out.println(j.validarJogada(opcao));
-        System.out.println(j.pontuarJogada(opcao));
-       }
+//        JogoGeneral j = new JogoGeneral();
+//
+//       while(true){
+//        j.rolarDados();
+//        j.listarDados();
+//
+//        opcao = sc.nextInt();
+//
+//        System.out.println(j.validarJogada(opcao));
+//        System.out.println(j.pontuarJogada(opcao));
+//       }
         // do{
         //     System.out.println("..:: Menu Interativo ::..");
         //     System.out.println("1 - Incluir jogador");

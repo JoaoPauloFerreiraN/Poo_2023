@@ -1,4 +1,6 @@
-public class Dados {
+import java.io.Serializable;
+
+public class Dados implements Serializable {
 
     private int valor;
 

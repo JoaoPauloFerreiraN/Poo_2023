@@ -1,4 +1,6 @@
-public class JogoGeneral {
+import java.io.Serializable;
+
+public class JogoGeneral implements Serializable {
     private Dados [] d;
     int [] jogadas;
 
@@ -48,13 +50,13 @@ public class JogoGeneral {
             if(this.jogadas[jogada-1] == -1){
                 return true;
             }else{
-                System.out.println("Jogada já realizada!");
+                //System.out.println("Jogada já realizada!");
                 return false;
             }
         }
     }
 
-    public void pontuarJogada(int jogada){
+    public int valorJogada (int jogada){
         int cont = 0;
         switch (jogada){
             case 1:
@@ -206,7 +208,28 @@ public class JogoGeneral {
             default:
                 System.out.println("Jogada inválida!");
                 break;
-            }
-            this.jogadas[jogada-1] =  cont;
+        }
+        return cont;
     }
+
+
+    public void pontuarJogada(int jogada){
+        this.jogadas[jogada-1] =  valorJogada(jogada);
+    }
+
+    public int jogadaMaquina(){
+        int jogada = 0;
+        int maior = 0;
+        for (int i = 0; i < 13; i++){
+            if(validarJogada(i+1)){
+                if(valorJogada(i+1) >= maior){
+                    maior = valorJogada(i+1);
+                    jogada = i+1;
+                }
+            }
+        }
+        return jogada;   
+    }
+
+
 }

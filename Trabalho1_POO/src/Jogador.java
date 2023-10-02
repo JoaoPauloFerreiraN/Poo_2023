@@ -82,4 +82,10 @@ public class Jogador implements Serializable  {
         }
         return total;
     }
+
+    public void novoJogo (){
+        for(int i =  0 ; i < 13; i++){
+            this.jogo.jogadas[i] = -1;
+        }
+    }
 }

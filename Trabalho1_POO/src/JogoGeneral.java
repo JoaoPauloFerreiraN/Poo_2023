@@ -212,7 +212,6 @@ public class JogoGeneral implements Serializable {
         return cont;
     }
 
-
     public void pontuarJogada(int jogada){
         this.jogadas[jogada-1] =  valorJogada(jogada);
     }

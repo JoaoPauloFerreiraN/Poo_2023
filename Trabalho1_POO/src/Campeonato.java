@@ -77,7 +77,11 @@ public class Campeonato implements Serializable {
 
                         }
                     }
-                    System.out.print( this.jogadores[j].getJogo().jogadas[i-1]);
+                    if (this.jogadores[j].getJogo().jogadas[i-1] < 0 ){
+                        System.out.print("-");
+                    }else {
+                        System.out.print( this.jogadores[j].getJogo().jogadas[i-1]);
+                    }
                 // }
             }
             System.out.println("");
@@ -89,18 +93,25 @@ public class Campeonato implements Serializable {
                 if ( l == 0 ){
                     System.out.print(" ");
                 }else{
-                    System.out.print("  ");
+                    System.out.print("   ");
 
                 }
             }
-            System.out.print(this.jogadores[i].totalPontos());
+            if (this.jogadores[i].totalPontos() < 0){
+                System.out.print("-");
+            }else{
+                System.out.print(this.jogadores[i].totalPontos());
+            }
         }
         System.out.println();
     }
 
-
     public void executarRodada(){
         int chaveFim = 0;
+        for (int i = 0; i < this.qtdParticipantes; i++){
+            this.jogadores[i].setJogadas(0);
+            this.jogadores[i].novoJogo();
+        }        
         do {
             for (int i = 0; i < this.qtdParticipantes; i++){
                 if( this.jogadores[i].getJogadas() < 13){

@@ -1,9 +1,13 @@
 import java.io.Serializable;
 
+//Clase JogoGeneral
 public class JogoGeneral implements Serializable {
     private Dados [] d;
     int [] jogadas;
 
+
+    //Construtor da classe JogoGeneral
+        //inicializa os 5 dados e as 13 jogadas, colocando -1 em todas as posições.
     public JogoGeneral(){
         this.d = new Dados[5];
         this.jogadas = new int[13];
@@ -15,6 +19,7 @@ public class JogoGeneral implements Serializable {
         }
     }
 
+    //Metodo para rolar e organizar os dados em ordem crescente para melhor visualização.   
     public void rolarDados(){
         for (int i = 0; i < 5; i++){
             this.d[i].roll();
@@ -22,6 +27,7 @@ public class JogoGeneral implements Serializable {
         this.sortDados();
     }
 
+    //Metodo para organizar os dados em ordem crescente para melhor visualização.
     public void sortDados(){
         int aux;
         for (int i = 0; i < 5; i++){
@@ -35,6 +41,7 @@ public class JogoGeneral implements Serializable {
         }
     }
 
+    //Metodo para imprimir os dados.
     public void listarDados(){
         for (int i = 0; i < 5; i++){
             System.out.print(this.d[i].getValor() + " ");
@@ -42,6 +49,7 @@ public class JogoGeneral implements Serializable {
         System.out.println();
     }
 
+    //Metodo para verificar se uma jogada é valida    
     public boolean validarJogada(int jogada){ 
         if(jogada < 1 || jogada > 13){
             System.out.println("Jogada inválida!");
@@ -56,6 +64,8 @@ public class JogoGeneral implements Serializable {
         }
     }
 
+    //Metodo que verifica o valor de uma jogada escolhida, retornando o valor da jogada.
+    // realizado dessa maneira para que quando a maquina jogar ela escolher a maior jogada.
     public int valorJogada (int jogada){
         int cont = 0;
         switch (jogada){
@@ -212,10 +222,12 @@ public class JogoGeneral implements Serializable {
         return cont;
     }
 
+    //Pontua a jogada escolhida no vetor de pontos.
     public void pontuarJogada(int jogada){
         this.jogadas[jogada-1] =  valorJogada(jogada);
     }
 
+    //Verifica a maior jogada possivel e retorna a jogada para ser pontuada.    
     public int jogadaMaquina(){
         int jogada = 0;
         int maior = 0;

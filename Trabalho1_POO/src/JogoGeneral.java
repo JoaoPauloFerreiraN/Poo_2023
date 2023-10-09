@@ -58,7 +58,6 @@ public class JogoGeneral implements Serializable {
             if(this.jogadas[jogada-1] == -1){
                 return true;
             }else{
-                //System.out.println("Jogada já realizada!");
                 return false;
             }
         }

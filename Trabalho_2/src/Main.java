@@ -1,4 +1,6 @@
 import java.util.Scanner;
+import java.io.Serializable;
+
 
 public class Main {
     public static void main(String[] args) {
@@ -12,10 +14,12 @@ public class Main {
             System.out.println("1 - Incluir jogador");
             System.out.println("2 - Remover jogador");
             System.out.println("3 - Executar rodada");
-            System.out.println("4 - Exibir pontuação");
-            System.out.println("5 - Gravar dados");
-            System.out.println("6 - Ler dados");
-            System.out.println("7 - Sair");
+            System.out.println("4 - Imprimir Saldos");
+            System.out.println("5 - Imprimir extratos dos resultados");
+            System.out.println("6 - Imprimir estatísticas");
+            System.out.println("7 - Gravar dados");
+            System.out.println("8 - Ler dados");
+            System.out.println("9 - Sair");
             System.out.print("Digite a opção desejada: ");
             opcao = sc.nextInt();
 
@@ -27,18 +31,22 @@ public class Main {
                     c.removerJogador();
                     break;
                 case 3:
-                    //c.executarRodada();
+                    c.executarRodadasApostas();
                     break;
                 case 4:
-//                    c.mostrarCartela();
                     break;
                 case 5:
-                    c.gravarEmArquivo();
+                    c.imprimirExtratosDosResultados();
                     break;
                 case 6:
-                    c.lerDeArquivo();
                     break;
                 case 7:
+                    c.gravarEmArquivo();
+                    break;
+                case 8:
+                    c.lerDeArquivo();
+                    break;
+                case 9:
 
                     break;
                 default:

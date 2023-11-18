@@ -3,9 +3,7 @@ import java.util.Arrays;
 
 
 public class JogoGeneral extends JogoDados{
-
     private int[] valoresJogadas;
-
 
 
     public JogoGeneral() {
@@ -13,17 +11,6 @@ public class JogoGeneral extends JogoDados{
         this.valoresJogadas = new int[13];
         for (int i = 0; i < 13; i++){
             this.setValoresJogadas(-1,i);
-        }
-    }
-
-    //Metodo para verificar se uma jogada é valida
-    public boolean validarJogada(int jogada){
-        if((jogada < 1 || jogada > 13) && (this.getValoresJogadas(jogada - 1) == -1)){ // Jogada fora da escala  ou já realizada.
-            System.out.println("Jogada inválida!");
-            return false;
-        }else{
-            this.pontuarJogada(jogada);
-            return true;
         }
     }
 
@@ -36,20 +23,25 @@ public class JogoGeneral extends JogoDados{
                 for (int i = 0; i < 5; i++) {
                     if (this.getDados()[i].getSideUP() == 1) {
                         cont++;
+                        System.out.println("cont contou: "+cont);
                     }
                 }
             }
             case 2 -> {
                 for (int i = 0; i < 5; i++) {
-                    if (this.getDados()[i].getSideUP() == 2) {
+                    if (super.getDados()[i].getSideUP() == 2) {
                         cont += 2;
+                        System.out.println("cont contou: "+cont);
                     }
+                    System.out.println("for contou: "+i);
+                    System.out.println("Dados: "+super.getDados()[i].getSideUP() );
                 }
             }
             case 3 -> {
                 for (int i = 0; i < 5; i++) {
                     if (this.getDados()[i].getSideUP() == 3) {
                         cont += 3;
+                        System.out.println("cont contou: "+cont);
                     }
                 }
             }
@@ -57,6 +49,7 @@ public class JogoGeneral extends JogoDados{
                 for (int i = 0; i < 5; i++) {
                     if (this.getDados()[i].getSideUP() == 4) {
                         cont += 4;
+                        System.out.println("cont contou: "+cont);
                     }
                 }
             }
@@ -64,6 +57,7 @@ public class JogoGeneral extends JogoDados{
                 for (int i = 0; i < 5; i++) {
                     if (this.getDados()[i].getSideUP() == 5) {
                         cont += 5;
+                        System.out.println("cont contou: "+cont);
                     }
                 }
             }
@@ -71,6 +65,7 @@ public class JogoGeneral extends JogoDados{
                 for (int i = 0; i < 5; i++) {
                     if (this.getDados()[i].getSideUP() == 6) {
                         cont += 6;
+                        System.out.println("cont contou: "+cont);
                     }
                 }
             }
@@ -185,34 +180,13 @@ public class JogoGeneral extends JogoDados{
         this.setValoresJogadas(valorJogada(jogada),jogada-1);
     }
 
-    //Verifica a maior jogada possivel e retorna a jogada para ser pontuada.
-    public int jogadaMaquina(){
-        int jogada = 0;
-        int maior = 0;
-        for (int i = 0; i < 13; i++){
-            if(validarJogada(i+1)){
-                if(valorJogada(i+1) >= maior){
-                    maior = valorJogada(i+1);
-                    jogada = i+1;
-                }
-            }
-        }
-        return jogada;
-    }
 
-    public int getValoresJogadas(int posicao) {
-        return valoresJogadas[posicao];
-    }
-
-    public void setValoresJogadas(int valor, int posicao) {
-        this.valoresJogadas[posicao] = valor;
-    }
-
-    public void rolarDados(){
+    public void rolarDados() {
         for (int i = 0; i < 5; i++){
             this.getDados()[i].roll();
         }
-        this.sortDados();
+        this.sortDados(1);
+        this.listarDados();
     }
 
     public void listarDados(){
@@ -259,11 +233,6 @@ public class JogoGeneral extends JogoDados{
     }
 
     @Override
-    public void setnDados(int nDados) {
-        super.setnDados(nDados);
-    }
-
-    @Override
     public String getNomeJogo() {
         return super.getNomeJogo();
     }
@@ -274,23 +243,17 @@ public class JogoGeneral extends JogoDados{
     }
 
     @Override
-    public float getSaldo() {
-        return super.getSaldo();
-    }
-
-    @Override
-    public void setSaldo(float saldo) {
-        super.setSaldo(saldo);
-    }
-
-    @Override
     public Dado[] getDados() {
         return super.getDados();
     }
 
-    @Override
-    public void setDados(Dado[] dados) {
-        super.setDados(dados);
+
+    public int getValoresJogadas(int posicao) {
+        return valoresJogadas[posicao];
+    }
+
+    public void setValoresJogadas(int valor, int posicao) {
+        this.valoresJogadas[posicao] = valor;
     }
 
     @Override
@@ -302,5 +265,28 @@ public class JogoGeneral extends JogoDados{
     public boolean tipoDeJogo() {
         return super.tipoDeJogo();
     }
+
+    public float logicaResultado(){
+        int sum = 0;
+        int double13 = getValoresJogadas(12) * 2;
+        float result = 0;
+        for(int i  = 0; i < 12; i++) {
+            sum += getValoresJogadas(i);
+        }
+        if (sum > double13){
+            System.out.println("\nO Jogador Venceu !");
+            this.setResultado(true);
+            result = this.getAposta();
+        }else {
+            System.out.println("\nO Jogador Perdeu !");
+            this.setResultado(false);
+            result = -1 * this.getAposta();
+        }
+        System.out.println("Valor da soma das jogadas (1 - 12): "+sum);
+        System.out.println("Dobro da jogada 13: "+double13);
+        return result;
+    }
+
+
 
 }

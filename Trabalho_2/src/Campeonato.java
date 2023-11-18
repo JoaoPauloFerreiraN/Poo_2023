@@ -10,6 +10,7 @@ public class Campeonato implements Serializable {
     private Jogador[] jogadores;
     private int qtdParticipantes = 0;
 
+
     public Campeonato() {
         this.jogadores = new Jogador[10];
     }
@@ -65,7 +66,158 @@ public class Campeonato implements Serializable {
         }
     }
 
-    //Printa a cartela na tela
+
+    public void imprimirExtratosDosResultados(){
+        for ( int i = 0; i < this.getQtdParticipantes(); i++){
+            Jogador jogadorAux = this.getJogadores()[i];
+            System.out.printf("\n Jogador: " + jogadorAux.getNome());
+            for (int j = 0; j < jogadorAux.getnJogadas(); j++){
+                JogoDados jogoAux = jogadorAux.getJogo()[j];
+                System.out.print("\n Jogo: ");
+                if ( jogoAux instanceof JogoGeneral ){
+                    System.out.print("Jogo General\n");
+                    jogoAux.jogadaExecutada();
+                    System.out.print("\nValor Apostado: " + jogoAux.getAposta());
+                    if (jogoAux.isResultado()){
+                        System.out.print("\nResultado: Venceu!");
+                    }else{
+                        System.out.print("\nResultado: Perdeu!\n");
+                    }
+                }else{
+                    System.out.printf("Jogo Azar");
+                }
+            }
+        }
+    }
+
+    public void executarRodadasApostas(){
+        Scanner sc = new Scanner(System.in);
+        //while (verificaJogadasTodos()){
+            for (int i = 0; i < this.getQtdParticipantes(); i++){
+                if(this.getJogadores()[i].getSaldo() > 0) {
+                    if (this.getJogadores()[i] instanceof Humano) {
+                        Humano jogadorAux = (Humano) this.getJogadores()[i];
+                        System.out.println("Vez do Jogador: " + jogadorAux.getNome());
+                        if (this.verificaJogadasLivre(jogadorAux)) {
+                            System.out.println("Informe o valor que voce deseja Apostar: ");
+                            float auxAposta = sc.nextFloat();
+                            sc.nextLine();
+                            while (auxAposta > jogadorAux.getSaldo() || auxAposta <= 0 ) {
+                                if (auxAposta > jogadorAux.getSaldo()){
+                                    System.out.println("Saldo insulficiente!\n Seu saldo é de: R$" + jogadorAux.getSaldo());
+                                }else {
+                                    System.out.println("Aposta menor ou igual a zero1!\n Seu saldo é de: " + jogadorAux.getSaldo());
+                                }
+                                System.out.println("Informe o valor que voce deseja Apostar: ");
+                                auxAposta = sc.nextFloat();
+                                sc.nextLine();
+                            }
+                            System.out.printf("Informe o Jogo que deseja jogar:\n 1 - Jogo General e 2 - Jogo Azar.\n");
+                            int auxTipoJogo = sc.nextInt();
+                            if (auxTipoJogo == 1) {
+                                JogoGeneral novoJogoGeneral = new JogoGeneral();
+                                jogadorAux.setJogo(novoJogoGeneral,jogadorAux.getnJogadas());
+                                novoJogoGeneral.setAposta(auxAposta);
+                                System.out.println("Jogando Jogo General !");
+                                rodadaJogoGeneralHumano(jogadorAux, novoJogoGeneral);
+                            } else {
+                                JogoAzar novoJogoAzar = new JogoAzar();
+                                jogadorAux.setJogo(novoJogoAzar,jogadorAux.getnJogadas());
+                                novoJogoAzar.setAposta(auxAposta);
+                                System.out.println("Jogando Jogo Azar !");
+                                rodadaJogoAzar(jogadorAux,novoJogoAzar);
+                            }
+                        }else{
+                            System.out.println("O Jogador não possui jogadas disponíveis !");
+
+                        }
+                    }
+                }else{
+                    System.out.println(this.getJogadores()[i].getNome() + " não possui saldo sulficiente para jogar !");
+                }
+            }
+//        }
+
+    }
+
+
+    public void rodadaJogoAzar(Humano jogadorAux, JogoAzar jogoAux){
+        float resultSaldo = 0;
+        char result = 'j';
+        int cont = 1;
+        int numProc;
+        boolean key = false;
+
+        System.out.println(cont + "° jogada: ");
+        jogadorAux.jogarDados(2);
+        jogoAux.listarDados();
+        numProc = jogoAux.calcSum();
+        do{
+            if (key){
+                System.out.println(cont + "° jogada: ");
+                jogadorAux.jogarDados(2);
+                jogoAux.listarDados();
+            }
+            if ((jogoAux.calcSum() == 7 && cont == 1 && !key) || (jogoAux.calcSum() == 11 && cont == 1 && !key)){
+                result = 'g';
+            } else if (jogoAux.calcSum() == 2 || jogoAux.calcSum() == 3 || jogoAux.calcSum() == 12) {
+                result = 'p';
+            } else if ((numProc == jogoAux.calcSum() )&& key ){
+                result = 'g';
+            }
+            key = true;
+            cont ++;
+
+        }while (result == 'j');
+        if (result == 'g'){
+            System.out.println("Parabéns você Ganhou !");
+            jogoAux.setResultado(true);
+        }else {
+            System.out.println("Que pena, você Perdeu !");
+            jogoAux.setResultado(false);
+        }
+        jogadorAux.setnJogadas(jogadorAux.getnJogadas() + 1);
+        resultSaldo = jogoAux.logicaResultado();
+        jogadorAux.setSaldo(jogadorAux.getSaldo() + resultSaldo);
+        System.out.println("Seu saldo atual é: R$" + jogadorAux.getSaldo());
+    }
+
+
+    public void rodadaJogoGeneralHumano (Humano jogadorAux, JogoGeneral jogoAux) {
+        float resultSaldo = 0;
+        for(int i = 0; i < 13; i++ ) {
+                System.out.print("Quantidade de  jogadas realizadas: " + i + "\n");
+                jogadorAux.jogarDados(1);
+                jogoAux.jogadaExecutada();
+                jogadorAux.escolherJogada(jogoAux);
+                System.out.println("-------------------------------------------------------------");
+        }
+        jogadorAux.setnJogadas(jogadorAux.getnJogadas() + 1);
+        jogoAux.jogadaExecutada();
+        resultSaldo = jogoAux.logicaResultado();
+        jogadorAux.setSaldo(jogadorAux.getSaldo() + resultSaldo);
+        System.out.println("Seu saldo atual é: R$" + jogadorAux.getSaldo());
+    }
+
+
+    public boolean verificaJogadasLivre (Jogador jogadorAux){
+        return jogadorAux.getnJogadas() < 10;
+    }
+
+    public boolean verificaJogadasTodos (){
+        boolean resultado = false;
+        for (int i = 0; i < this.getQtdParticipantes(); i++ ){
+            if (this.verificaJogadasLivre(this.getJogadores()[i])){ // Se alguem tiver jogadas livre ele acaba com o for!
+                resultado = true;
+                i = this.getQtdParticipantes();
+            }
+        }
+        return resultado;
+    }
+
+
+
+//    Printa a cartela na tela
 //    public void mostrarCartela() {
 //        System.out.print("Jogador:");
 //        for (int i = 0; i < this.qtdParticipantes; i++) {
@@ -199,6 +351,23 @@ public class Campeonato implements Serializable {
             System.err.println("Erro: " + e.toString());
         }
 
+    }
+
+
+    public Jogador[] getJogadores() {
+        return jogadores;
+    }
+
+    public void setJogadores(Jogador[] jogadores) {
+        this.jogadores = jogadores;
+    }
+
+    public int getQtdParticipantes() {
+        return qtdParticipantes;
+    }
+
+    public void setQtdParticipantes(int qtdParticipantes) {
+        this.qtdParticipantes = qtdParticipantes;
     }
 
 }

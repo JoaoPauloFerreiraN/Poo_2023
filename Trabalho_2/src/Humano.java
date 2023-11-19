@@ -2,7 +2,7 @@ import java.util.Scanner;
 import java.io.Serializable;
 
 
-public class Humano extends Jogador implements JogarComoHumano{
+public class Humano extends Jogador implements JogarComoHumano, Serializable{
     private String cpf;
     private String agencia;
     private String conta;
@@ -12,13 +12,6 @@ public class Humano extends Jogador implements JogarComoHumano{
 
     public Humano(String nome, int tipoJogador, String cpf, String agencia, String conta, int nBanco) {
         super(nome, tipoJogador);
-        this.cpf = cpf;
-        this.agencia = agencia;
-        this.conta = conta;
-        this.nBanco = nBanco;
-    }
-
-    public Humano(String cpf, String agencia, String conta, int nBanco) {
         this.cpf = cpf;
         this.agencia = agencia;
         this.conta = conta;
@@ -56,6 +49,5 @@ public class Humano extends Jogador implements JogarComoHumano{
                 ", conta='" + conta + '\'' +
                 ", nBanco='" + nBanco + "'\n";
     }
-
 
 }

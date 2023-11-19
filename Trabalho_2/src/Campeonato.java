@@ -259,6 +259,37 @@ public class Campeonato implements Serializable {
         return jogadorAux.getnJogadas() < 10;
     }
 
+    public void imprimeSaldo(int tipo){
+        System.out.println("-------SALDOS---------");
+        switch (tipo) {
+            case 1 -> {
+                for (int i = 0; i < this.getQtdParticipantes(); i++) {
+                    Jogador jogadorAux = this.getJogadores()[i];
+                    System.out.println(jogadorAux.getNome() + " possui R$ " + jogadorAux.getSaldo());
+                }
+            }
+            case 2 -> {
+                for (int i = 0; i < this.getQtdParticipantes(); i++) {
+                    Jogador jogadorAux = this.getJogadores()[i];
+                    if (jogadorAux instanceof Humano) {
+                        System.out.println(jogadorAux.getNome() + " possui R$ " + jogadorAux.getSaldo());
+                    }
+                }
+            }
+            case 3 -> {
+                for (int i = 0; i < this.getQtdParticipantes(); i++) {
+                    Jogador jogadorAux = this.getJogadores()[i];
+                    if (jogadorAux instanceof Maquina) {
+                        System.out.println(jogadorAux.getNome() + " possui R$ " + jogadorAux.getSaldo());
+                    }
+                }
+            }
+        }
+        System.out.println("----------------");
+
+    }
+
+
 
 
 //    Printa a cartela na tela

@@ -34,6 +34,12 @@ public class Main {
                     c.executarRodadasApostas();
                     break;
                 case 4:
+                    int opcao2 = 0;
+                    System.out.println("Digite a opcao desejada:\n1-Para todos os jogadores;\n" +
+                            "2- Apenas para os jogadores Humanos;\n" +
+                            "3- Apenas para os jogadores Maquina;");
+                    opcao2 = sc.nextInt();
+                    c.imprimeSaldo(opcao2);
                     break;
                 case 5:
                     c.imprimirExtratosDosResultados();

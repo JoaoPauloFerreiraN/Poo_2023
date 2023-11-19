@@ -2,7 +2,7 @@ import java.util.Arrays;
 import java.io.Serializable;
 
 
-abstract public class Jogador {
+abstract public class Jogador implements Serializable {
     private String nome;
     private int tipoJogador;
     private JogoDados[] jogo;
@@ -14,28 +14,28 @@ abstract public class Jogador {
         this.tipoJogador = 2; //Maquina
         jogo = new JogoDados[10];
         this.nJogadas = 0;
-        this.saldo = 100;
+        this.saldo = (float) 100.00;
     }
     public Jogador( int tipoJogador) {
         this.nome = "Anonimo";
         this.tipoJogador = tipoJogador;
         jogo = new JogoDados[10];
         this.nJogadas = 0;
-        this.saldo = 100;
+        this.saldo = (float) 100.00;
     }
     public Jogador( String nome) {
         this.nome = nome;
         this.tipoJogador = 2;//Maquina
         jogo = new JogoDados[10];
         this.nJogadas = 0;
-        this.saldo = 100;
+        this.saldo = (float) 100.00;
     }
     public Jogador(String nome, int tipoJogador) {
         this.nome = nome;
         this.tipoJogador = tipoJogador;
         jogo = new JogoDados[10];
         this.nJogadas = 0;
-        this.saldo = 100;
+        this.saldo = (float) 100.00;
     }
 
 

@@ -1,17 +1,7 @@
-public class Maquina extends Jogador implements JogarComoMaquina {
+import java.io.Serializable;
 
+public class Maquina extends Jogador implements JogarComoMaquina, Serializable {
 
-
-    public Maquina() {
-    }
-
-    public Maquina(int tipoJogador) {
-        super(tipoJogador);
-    }
-
-    public Maquina(String nome) {
-        super(nome);
-    }
 
     public Maquina(String nome, int tipoJogador) {
         super(nome, tipoJogador);

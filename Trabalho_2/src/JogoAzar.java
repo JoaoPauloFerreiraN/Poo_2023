@@ -1,6 +1,6 @@
 import java.io.Serializable;
 
-public class JogoAzar extends JogoDados{
+public class JogoAzar extends JogoDados implements Serializable{
 //    private float valorAposta;
 
     public JogoAzar() {

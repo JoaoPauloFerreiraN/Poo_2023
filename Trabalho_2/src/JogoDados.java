@@ -1,7 +1,10 @@
-import java.io.Serializable;
 
 //Classe JogoDados: Herdada por General ou Azar e implementa estatistica;
-abstract class JogoDados implements Estatistica {
+import java.io.Serializable;
+
+
+
+abstract class JogoDados implements Estatistica, Serializable {
     private int nDados;
     private String  nomeJogo;
     private float aposta;

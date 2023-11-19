@@ -1,7 +1,7 @@
 import java.io.Serializable;
 
 //Classe Dado: Acessada para rolar os dados dos jogos.
-public class Dado {
+public class Dado implements Serializable {
     private  int sideUP;
 
     public Dado (){

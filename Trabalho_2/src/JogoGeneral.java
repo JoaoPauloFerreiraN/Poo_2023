@@ -2,7 +2,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 
 
-public class JogoGeneral extends JogoDados{
+public class JogoGeneral extends JogoDados implements Serializable{
     private int[] valoresJogadas;
 
 

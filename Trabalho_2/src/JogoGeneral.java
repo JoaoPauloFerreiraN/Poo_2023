@@ -164,6 +164,7 @@ public class JogoGeneral extends JogoDados implements Serializable{
         for (int i = 0; i < 5; i++){
             this.getDados()[i].roll();
         }
+        this.somarFacerSorteadas(this.getDadosEstatistic());
         this.sortDados(1);
         this.listarDados();
     }
@@ -235,10 +236,7 @@ public class JogoGeneral extends JogoDados implements Serializable{
         this.valoresJogadas[posicao] = valor;
     }
 
-    @Override
-    public int somarFacerSorteadas(Dado[] x) {
-        return super.somarFacerSorteadas(x);
-    }
+
 
     @Override
     public boolean tipoDeJogo() {

@@ -1,11 +1,10 @@
 import java.util.Scanner;
-import java.io.Serializable;
 
 
 public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        int opcao = 0;
+        int opcao;
 
         Campeonato c = new Campeonato();
 
@@ -22,58 +21,57 @@ public class Main {
             System.out.println("9 - Sair");
             System.out.print("Digite a opção desejada: ");
             opcao = sc.nextInt();
-
+            System.out.println();
             switch (opcao) {
-                case 1:
-                    c.incluirJogador();
-                    break;
-                case 2:
-                    c.removerJogador();
-                    break;
-                case 3:
-                    c.executarRodadasApostas();
-                    break;
-                case 4:
-                    int opcao2 = 0;
-                    System.out.println("Você deseja visualizar o saldo de qual tipo de jogadores ?\n" +
-                            "Digite a opcao desejada:\n" +
-                            "1- Para todos os jogadores;\n" +
-                            "2- Apenas para os jogadores Humanos;\n" +
-                            "3- Apenas para os jogadores Maquina;");
+                case 1 -> c.incluirJogador();
+                case 2 -> c.removerJogador();
+                case 3 -> c.executarRodadasApostas();
+                case 4 -> {
+                    int opcao2;
+                    System.out.println("""
+                            Você deseja visualizar o saldo de qual tipo de jogadores ?
+                            Digite a opcao desejada:
+                            1- Para todos os jogadores;
+                            2- Apenas para os jogadores Humanos;
+                            3- Apenas para os jogadores Maquina;""");
                     opcao2 = sc.nextInt();
                     c.imprimeSaldo(opcao2);
-                    break;
-                case 5:
-                    int opcao3 = 0;
-                    int opcao4 = 0;
-                    System.out.println("Você deseja visualizar o extrato para qual jogo ?" +
-                            "\nDigite a opcao desejada:\n" +
-                            "1- Para todos os jogos;\n" +
-                            "2- Apenas para o Jogo General;\n" +
-                            "3- Apenas para o Jogo de Azar;");
+                }
+                case 5 -> {
+                    int opcao3;
+                    int opcao4;
+                    System.out.println("""
+                            Você deseja visualizar o extrato para qual jogo ?
+                            Digite a opcao desejada:
+                            1- Para todos os jogos;
+                            2- Apenas para o Jogo General;
+                            3- Apenas para o Jogo de Azar;""");
                     opcao3 = sc.nextInt();
-                    System.out.println("Você deseja visualizar o extrato de qual tipo de jogadores ?\n" +
-                            "Digite a opcao desejada:\n" +
-                            "1- Para todos os jogadores;\n" +
-                            "2- Apenas para os jogadores Humanos;\n" +
-                            "3- Apenas para os jogadores Maquina;");
+                    System.out.println("""
+                            Você deseja visualizar o extrato de qual tipo de jogadores ?
+                            Digite a opcao desejada:
+                            1- Para todos os jogadores;
+                            2- Apenas para os jogadores Humanos;
+                            3- Apenas para os jogadores Maquina;""");
                     opcao4 = sc.nextInt();
-                    c.imprimirExtratosDosResultados(opcao3,opcao4);
-                    break;
-                case 6:
-                    break;
-                case 7:
-                    c.gravarEmArquivo();
-                    break;
-                case 8:
-                    c.lerDeArquivo();
-                    break;
-                case 9:
-
-                    break;
-                default:
-                    System.out.println("Opção inválida!");
-                    break;
+                    c.imprimirExtratosDosResultados(opcao3, opcao4);
+                }
+                case 6 -> {
+                    int opcao5;
+                    System.out.println("""
+                            Como deseja visualizar as estatisticas ?
+                            Digite a opcao desejada:
+                            1- Por jogador;
+                            2- Por jogos escolhidos por cada jogador;
+                            3- Total por jogos;
+                            4- Total do campeonato;""");
+                    opcao5 = sc.nextInt();
+                    c.imprimeEstatisticas(opcao5);
+                }
+                case 7 -> c.gravarEmArquivo();
+                case 8 -> c.lerDeArquivo();
+                case 9 -> System.out.println();
+                default -> System.out.println("Opção inválida!");
             }
         }while(opcao != 9);
 

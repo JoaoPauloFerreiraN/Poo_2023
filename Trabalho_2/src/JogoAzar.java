@@ -10,6 +10,7 @@ public class JogoAzar extends JogoDados implements Serializable{
         for (int i = 0; i < 2; i++){
             this.getDados()[i].roll();
         }
+        this.somarFacerSorteadas(this.getDadosEstatistic());
         this.sortDados(2);
     }
 

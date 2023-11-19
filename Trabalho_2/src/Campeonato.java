@@ -10,7 +10,7 @@ import java.io.ObjectInputStream;
 public class Campeonato implements Serializable {
     private Jogador[] jogadores;
     private int qtdParticipantes = 0;
-    
+
     public Campeonato() {
         this.jogadores = new Jogador[10];
     }
@@ -410,6 +410,94 @@ public class Campeonato implements Serializable {
         return  (float) (Math.round(saldoPartida * 100.0) / 100.0);
     }
 
+    public void imprimeEstatisticas(int x){
+        Jogador jogadorAux;
+        JogoDados jogoAux;
+        int [] estatisticaJogador = new int[6];
+        int [] estatisticaJogo1 = new int[6];
+        int [] estatisticaJogo2 = new int[6];
+        switch (x) {
+            case 1 -> {
+                for (int i = 0; i < this.getQtdParticipantes(); i++) {
+                    jogadorAux = this.getJogadores()[i];
+                    System.out.println("Jogador " + jogadorAux.getNome());
+                    for (int j = 0; j < jogadorAux.getnJogadas(); j++) {
+                        jogoAux = jogadorAux.getJogo()[j];
+                        for (int k = 0; k < 6; k++) {
+                            estatisticaJogador[k] += jogoAux.getDadosEstatistic()[k];
+                        }
+                    }
+                    for (int k = 0; k < 6; k++) {
+                        System.out.println(k + 1 + ": " + estatisticaJogador[k]);
+                    }
+                }
+            }
+            case 2-> {
+                for (int i = 0; i < this.getQtdParticipantes(); i++) {
+                    jogadorAux = this.getJogadores()[i];
+                    System.out.println("Jogador " + jogadorAux.getNome());
+                    calcEstatistc(jogadorAux, estatisticaJogo1, estatisticaJogo2);
+                    printEstatistc(estatisticaJogo1, estatisticaJogo2);
+                    for (int k = 0; k < 6; k++) {
+                        estatisticaJogo1[k] = 0;
+                        estatisticaJogo2[k] = 0;
+                    }
+                }
+
+            }
+            case 3 -> {
+                for (int i = 0; i < this.getQtdParticipantes(); i++) {
+                    jogadorAux = this.getJogadores()[i];
+                    calcEstatistc(jogadorAux, estatisticaJogo1, estatisticaJogo2);
+                }
+                printEstatistc(estatisticaJogo1, estatisticaJogo2);
+
+            }
+            case 4 -> {
+                for (int i = 0; i < this.getQtdParticipantes(); i++) {
+                    jogadorAux = this.getJogadores()[i];
+                    for (int j = 0; j < jogadorAux.getnJogadas(); j++) {
+                        jogoAux = jogadorAux.getJogo()[j];
+                        for (int k = 0; k < 6; k++) {
+                            estatisticaJogo1[k] += jogoAux.getDadosEstatistic()[k];
+                        }
+                    }
+                }
+                System.out.println("Estatistica por Campeonato: ");
+                for (int k = 0; k < 6; k++) {
+                    System.out.println(k + 1 + ": " + estatisticaJogo1[k]);
+                }
+            }
+
+        }
+    }
+
+    private void printEstatistc(int[] estatisticaJogo1, int[] estatisticaJogo2) {
+        System.out.println("Jogo General: ");
+        for (int k = 0; k < 6; k++) {
+            System.out.println(k + 1 + ": " + estatisticaJogo1[k]);
+        }
+        System.out.println("Jogo de Azar: ");
+        for (int k = 0; k < 6; k++) {
+            System.out.println(k + 1 + ": " + estatisticaJogo2[k]);
+        }
+    }
+
+    private void calcEstatistc(Jogador jogadorAux, int[] estatisticaJogo1, int[] estatisticaJogo2) {
+        JogoDados jogoAux;
+        for (int j = 0; j < jogadorAux.getnJogadas(); j++) {
+            jogoAux = jogadorAux.getJogo()[j];
+            if (jogoAux instanceof JogoGeneral) {
+                for (int k = 0; k < 6; k++) {
+                    estatisticaJogo1[k] += jogoAux.getDadosEstatistic()[k];
+                }
+            } else {
+                for (int k = 0; k < 6; k++) {
+                    estatisticaJogo2[k] += jogoAux.getDadosEstatistic()[k];
+                }
+            }
+        }
+    }
 
 
     //Grava em arquivo

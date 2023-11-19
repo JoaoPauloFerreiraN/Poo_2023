@@ -2,14 +2,13 @@
 //Classe JogoDados: Herdada por General ou Azar e implementa estatistica;
 import java.io.Serializable;
 
-
-
 abstract class JogoDados implements Estatistica, Serializable {
     private int nDados;
     private String  nomeJogo;
     private float aposta;
     private Dado[] dados;
     private boolean resultado; // true = venceu  false= perdeu
+    private int[] dadosEstatistic;
 
     public JogoDados (int nD, String nJ){
         this.nomeJogo = nJ;
@@ -18,6 +17,7 @@ abstract class JogoDados implements Estatistica, Serializable {
         for (int i = 0; i < nD; i++){
             this.dados[i] = new Dado();
         }
+        dadosEstatistic = new int[numFaces];
     }
 
     //Metodo para rolar e organizar os dados em ordem crescente para melhor visualização.
@@ -87,9 +87,31 @@ abstract class JogoDados implements Estatistica, Serializable {
         this.resultado = resultado;
     }
 
-    @Override
-    public int somarFacerSorteadas(Dado[] x) {
-        return 0;
+    public int[] getDadosEstatistic() {
+        return dadosEstatistic;
     }
+
+    public void setDadosEstatistic(int[] dadosEstatistic) {
+        this.dadosEstatistic = dadosEstatistic;
+    }
+
+
+    @Override
+    public void somarFacerSorteadas(int[] estatistica) {
+        int face;
+        for(int i = 0; i < getnDados(); i++){
+            face = this.getDados()[i].getSideUP();
+            estatistica[face-1]+=1;
+        }
+        setDadosEstatistic(estatistica);
+    }
+
+    @Override
+    public void imprimeEstatisticas() {
+        for (int i = 0; i < numFaces; i++){
+            System.out.println((i+1) + ":" + getDadosEstatistic()[i]);
+        }
+    }
+
     abstract public float logicaResultado();
 }

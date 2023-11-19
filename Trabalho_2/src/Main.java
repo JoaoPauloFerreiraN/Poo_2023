@@ -53,7 +53,7 @@ public class Main {
                     System.out.println("Opção inválida!");
                     break;
             }
-        }while(opcao != 7);
+        }while(opcao != 9);
 
     }
 }

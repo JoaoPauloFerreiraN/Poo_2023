@@ -23,7 +23,6 @@ public class JogoGeneral extends JogoDados{
                 for (int i = 0; i < 5; i++) {
                     if (this.getDados()[i].getSideUP() == 1) {
                         cont++;
-                        System.out.println("cont contou: "+cont);
                     }
                 }
             }
@@ -31,17 +30,13 @@ public class JogoGeneral extends JogoDados{
                 for (int i = 0; i < 5; i++) {
                     if (super.getDados()[i].getSideUP() == 2) {
                         cont += 2;
-                        System.out.println("cont contou: "+cont);
                     }
-                    System.out.println("for contou: "+i);
-                    System.out.println("Dados: "+super.getDados()[i].getSideUP() );
                 }
             }
             case 3 -> {
                 for (int i = 0; i < 5; i++) {
                     if (this.getDados()[i].getSideUP() == 3) {
                         cont += 3;
-                        System.out.println("cont contou: "+cont);
                     }
                 }
             }
@@ -49,7 +44,6 @@ public class JogoGeneral extends JogoDados{
                 for (int i = 0; i < 5; i++) {
                     if (this.getDados()[i].getSideUP() == 4) {
                         cont += 4;
-                        System.out.println("cont contou: "+cont);
                     }
                 }
             }
@@ -57,7 +51,6 @@ public class JogoGeneral extends JogoDados{
                 for (int i = 0; i < 5; i++) {
                     if (this.getDados()[i].getSideUP() == 5) {
                         cont += 5;
-                        System.out.println("cont contou: "+cont);
                     }
                 }
             }
@@ -65,7 +58,6 @@ public class JogoGeneral extends JogoDados{
                 for (int i = 0; i < 5; i++) {
                     if (this.getDados()[i].getSideUP() == 6) {
                         cont += 6;
-                        System.out.println("cont contou: "+cont);
                     }
                 }
             }
@@ -119,35 +111,22 @@ public class JogoGeneral extends JogoDados{
                 }
             }
             case 10 -> {
-                int seqA = 0;
-                if (this.getDados()[0].getSideUP() == 2) {
-                    seqA++;
-                }
-                for (int i = 0; i < 5; i++) {
-                    if (this.getDados()[i].getSideUP() == (this.getDados()[i].getSideUP() - 1)) {
-                        seqA++;
-                    }
-                }
-                if (seqA == 5) {
+                if (this.getDados()[0].getSideUP() == 2 &&
+                        this.getDados()[1].getSideUP() == 3 &&
+                        this.getDados()[2].getSideUP() == 4 &&
+                        this.getDados()[3].getSideUP() == 5 &&
+                        this.getDados()[4].getSideUP() == 6 ) {
                     cont = 30;
-                } else {
-                    cont = 0;
                 }
+
             }
             case 11 -> {
-                int seqB = 0;
-                if (this.getDados()[0].getSideUP() == 1) {
-                    seqB++;
-                }
-                for (int i = 0; i < 5; i++) {
-                    if (this.getDados()[i].getSideUP() == (this.getDados()[i].getSideUP() - 1)) {
-                        seqB++;
-                    }
-                }
-                if (seqB == 5) {
-                    cont = 40;
-                } else {
-                    cont = 0;
+                if (this.getDados()[0].getSideUP() == 1 &&
+                        this.getDados()[1].getSideUP() == 2 &&
+                        this.getDados()[2].getSideUP() == 3 &&
+                        this.getDados()[3].getSideUP() == 4 &&
+                        this.getDados()[4].getSideUP() == 5 ) {
+                    cont = 30;
                 }
             }
             case 12 -> {

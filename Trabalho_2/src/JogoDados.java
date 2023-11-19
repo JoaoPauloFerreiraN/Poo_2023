@@ -76,7 +76,6 @@ abstract class JogoDados implements Estatistica {
         return dados;
     }
 
-
     public boolean isResultado() {
         return resultado;
     }

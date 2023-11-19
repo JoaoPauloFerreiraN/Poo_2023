@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.ObjectOutputStream;
 import java.io.ObjectInputStream;
 
+
 public class Campeonato implements Serializable {
     private Jogador[] jogadores;
     private int qtdParticipantes = 0;
@@ -15,15 +16,18 @@ public class Campeonato implements Serializable {
         this.jogadores = new Jogador[10];
     }
 
+
+
     //Adiciona o jogador ao campeonato
     public void incluirJogador() {
         if (qtdParticipantes < 10) {
+            Jogador j;
             Scanner sc = new Scanner(System.in);
             System.out.println("Digite o nome do jogador: ");
             String nome = sc.nextLine();
             System.out.println("Digite o tipo do jogador [1 - Humano ou 2 - Maquina]: ");
             int tipo = sc.nextInt();
-            if (tipo == 1){
+            if (tipo == 1) {
                 sc.nextLine();
                 System.out.println("Digite o CPF do jogador: ");
                 String cpf = sc.nextLine();
@@ -34,12 +38,14 @@ public class Campeonato implements Serializable {
                 System.out.println("Digite o numero do banco do jogador: ");
                 int numero = sc.nextInt();
                 sc.nextLine();
-                Jogador j = new Humano(nome, tipo, cpf, agencia, conta, numero);
-                this.jogadores[this.qtdParticipantes] = j;
-                System.out.printf(this.jogadores[this.qtdParticipantes].toString());
-                this.qtdParticipantes++;
+                 j = new Humano(nome, tipo, cpf, agencia, conta, numero);
 
+            }else {
+                 j = new Maquina(nome,tipo);
             }
+            this.setJogadores(j,this.getQtdParticipantes());
+            System.out.printf(this.jogadores[this.getQtdParticipantes()].toString());
+            this.setQtdParticipantes(this.getQtdParticipantes()+1);
         } else {
             System.out.println("Número máximo de jogadores atingido!");
         }
@@ -47,6 +53,7 @@ public class Campeonato implements Serializable {
 
     //Remnove um jogador pelo nome
     public void removerJogador() {
+        boolean key = false;
         if (this.qtdParticipantes > 0) {
             Scanner sc = new Scanner(System.in);
             System.out.println("Digite o nome do jogador: ");
@@ -58,8 +65,13 @@ public class Campeonato implements Serializable {
                         this.jogadores[j] = this.jogadores[j + 1];
                     }
                     this.qtdParticipantes--;
+                    System.out.println("Jogador "+nome+" removido com sucesso!");
+                    key = true;
                     break;
                 }
+            }
+            if(!key){
+                System.out.println("Jogador não encontrado !");
             }
         } else {
             System.out.println("Não há jogadores cadastrados!");
@@ -84,7 +96,7 @@ public class Campeonato implements Serializable {
                         System.out.print("\nResultado: Perdeu!\n");
                     }
                 }else{
-                    System.out.printf("Jogo Azar");
+                    System.out.print("Jogo Azar");
                 }
             }
         }
@@ -92,13 +104,13 @@ public class Campeonato implements Serializable {
 
     public void executarRodadasApostas(){
         Scanner sc = new Scanner(System.in);
-        //while (verificaJogadasTodos()){
             for (int i = 0; i < this.getQtdParticipantes(); i++){
                 if(this.getJogadores()[i].getSaldo() > 0) {
                     if (this.getJogadores()[i] instanceof Humano) {
                         Humano jogadorAux = (Humano) this.getJogadores()[i];
-                        System.out.println("Vez do Jogador: " + jogadorAux.getNome());
+                        System.out.println("\n\nVez do Jogador: " + jogadorAux.getNome());
                         if (this.verificaJogadasLivre(jogadorAux)) {
+                            System.out.println("Saldo disponivel: R$" + jogadorAux.getSaldo());
                             System.out.println("Informe o valor que voce deseja Apostar: ");
                             float auxAposta = sc.nextFloat();
                             sc.nextLine();
@@ -112,37 +124,63 @@ public class Campeonato implements Serializable {
                                 auxAposta = sc.nextFloat();
                                 sc.nextLine();
                             }
-                            System.out.printf("Informe o Jogo que deseja jogar:\n 1 - Jogo General e 2 - Jogo Azar.\n");
+                            System.out.println("Informe o Jogo que deseja jogar:\n 1 - Jogo General e 2 - Jogo Azar.\n");
                             int auxTipoJogo = sc.nextInt();
                             if (auxTipoJogo == 1) {
-                                JogoGeneral novoJogoGeneral = new JogoGeneral();
-                                jogadorAux.setJogo(novoJogoGeneral,jogadorAux.getnJogadas());
-                                novoJogoGeneral.setAposta(auxAposta);
-                                System.out.println("Jogando Jogo General !");
-                                rodadaJogoGeneralHumano(jogadorAux, novoJogoGeneral);
+                                rodadaJogoGeneralHumano(jogadorAux, initJogoGeneral(jogadorAux,auxAposta));
                             } else {
-                                JogoAzar novoJogoAzar = new JogoAzar();
-                                jogadorAux.setJogo(novoJogoAzar,jogadorAux.getnJogadas());
-                                novoJogoAzar.setAposta(auxAposta);
-                                System.out.println("Jogando Jogo Azar !");
-                                rodadaJogoAzar(jogadorAux,novoJogoAzar);
+                                rodadaJogoAzar(jogadorAux,initJogoAzar(jogadorAux, auxAposta));
                             }
                         }else{
                             System.out.println("O Jogador não possui jogadas disponíveis !");
 
+                        }
+                    }else { //Jogador maquina
+                        Maquina jogadorAux = (Maquina) this.getJogadores()[i];
+                        System.out.println("Vez da Maquina: " + jogadorAux.getNome());
+                        if (this.verificaJogadasLivre(jogadorAux)) {
+                            int jogoRandom;
+                            float auxAposta = (float) (Math.round((Math.random() * (jogadorAux.getSaldo() - 1)) * 100.0) / 100.0);
+                            System.out.println("Saldo disponivel: R$" + jogadorAux.getSaldo());
+                            System.out.println("O valor apostado foi de: R$" + auxAposta);
+                            jogoRandom = (int) Math.floor(Math.random()*2)+1;
+                            System.out.println("Informe o Jogo que deseja jogar:\n 1 - Jogo General e 2 - Jogo Azar.");
+                            if(jogoRandom == 1){
+                                rodadaJogoGeneralMaquina(jogadorAux, initJogoGeneral(jogadorAux,auxAposta));
+                            } else {
+                                rodadaJogoAzar(jogadorAux,initJogoAzar(jogadorAux, auxAposta));
+
+                            }
                         }
                     }
                 }else{
                     System.out.println(this.getJogadores()[i].getNome() + " não possui saldo sulficiente para jogar !");
                 }
             }
-//        }
+            if(this.getQtdParticipantes() == 0){
+                System.out.println("Não há jogadores no campeonato!");
+            }
 
     }
 
+    public JogoGeneral initJogoGeneral(Jogador jogadorAux, float auxAposta){
+        JogoGeneral novoJogoGeneral = new JogoGeneral();
+        jogadorAux.setJogo(novoJogoGeneral,jogadorAux.getnJogadas());
+        novoJogoGeneral.setAposta(auxAposta);
+        System.out.println("Jogando Jogo General !");
+        return novoJogoGeneral;
+    }
 
-    public void rodadaJogoAzar(Humano jogadorAux, JogoAzar jogoAux){
-        float resultSaldo = 0;
+    public JogoAzar initJogoAzar (Jogador jogadorAux, float auxAposta){
+        JogoAzar novoJogoAzar = new JogoAzar();
+        jogadorAux.setJogo(novoJogoAzar,jogadorAux.getnJogadas());
+        novoJogoAzar.setAposta(auxAposta);
+        System.out.println("Jogando Jogo Azar !");
+        return novoJogoAzar;
+    }
+
+    public void rodadaJogoAzar(Jogador jogadorAux, JogoAzar jogoAux){
+        float resultSaldo;
         char result = 'j';
         int cont = 1;
         int numProc;
@@ -180,11 +218,11 @@ public class Campeonato implements Serializable {
         resultSaldo = jogoAux.logicaResultado();
         jogadorAux.setSaldo(jogadorAux.getSaldo() + resultSaldo);
         System.out.println("Seu saldo atual é: R$" + jogadorAux.getSaldo());
+        System.out.println();
     }
 
-
     public void rodadaJogoGeneralHumano (Humano jogadorAux, JogoGeneral jogoAux) {
-        float resultSaldo = 0;
+        float resultSaldo;
         for(int i = 0; i < 13; i++ ) {
                 System.out.print("Quantidade de  jogadas realizadas: " + i + "\n");
                 jogadorAux.jogarDados(1);
@@ -197,22 +235,28 @@ public class Campeonato implements Serializable {
         resultSaldo = jogoAux.logicaResultado();
         jogadorAux.setSaldo(jogadorAux.getSaldo() + resultSaldo);
         System.out.println("Seu saldo atual é: R$" + jogadorAux.getSaldo());
+        System.out.println();
     }
 
+    public void rodadaJogoGeneralMaquina(Maquina jogadorAux, JogoGeneral jogoAux){
+        float resultSaldo;
+        for(int i = 0; i < 13; i++ ) {
+            System.out.print("Quantidade de  jogadas realizadas: " + i + "\n");
+            jogadorAux.jogarDados(1);
+            jogoAux.jogadaExecutada();
+            jogadorAux.aplicarEstrategia(jogoAux);
+            System.out.println("-------------------------------------------------------------");
+        }
+        jogadorAux.setnJogadas(jogadorAux.getnJogadas() + 1);
+        jogoAux.jogadaExecutada();
+        resultSaldo = jogoAux.logicaResultado();
+        jogadorAux.setSaldo(jogadorAux.getSaldo() + resultSaldo);
+        System.out.println("Seu saldo atual é: R$" + jogadorAux.getSaldo());
+        System.out.println();
+    }
 
     public boolean verificaJogadasLivre (Jogador jogadorAux){
         return jogadorAux.getnJogadas() < 10;
-    }
-
-    public boolean verificaJogadasTodos (){
-        boolean resultado = false;
-        for (int i = 0; i < this.getQtdParticipantes(); i++ ){
-            if (this.verificaJogadasLivre(this.getJogadores()[i])){ // Se alguem tiver jogadas livre ele acaba com o for!
-                resultado = true;
-                i = this.getQtdParticipantes();
-            }
-        }
-        return resultado;
     }
 
 
@@ -269,51 +313,6 @@ public class Campeonato implements Serializable {
 //        System.out.println();
 //    }
 
-    //Executa as rodadas
-
-//    public void executarRodada() {
-//        int chaveFim = 0;
-//        for (int i = 0; i < this.qtdParticipantes; i++) {
-//            this.jogadores[i].setJogadas(0);
-//            this.jogadores[i].novoJogo();
-//        }
-//        do {
-//            for (int i = 0; i < this.qtdParticipantes; i++) {
-//                if (this.jogadores[i].getJogadas() < 13) {
-//                    if (this.jogadores[i].getTipoJogador() == 1) {
-//                        Scanner sc = new Scanner(System.in);
-//                        System.out.println("Vez do jogador: " + this.jogadores[i].getNome());
-//                        this.jogadores[i].jogarDados();
-//                        System.out.println("Digite a jogada desejada: ");
-//                        int jogada = sc.nextInt();
-//                        this.jogadores[i].escolherJogada(jogada);
-//                        this.jogadores[i].mostrarJogadasExecutadas();
-//                        System.out.println("-------------------------------------------------------------");
-//                    } else {
-//                        System.out.println("Vez do jogador: " + this.jogadores[i].getNome());
-//                        this.jogadores[i].jogarDados();
-//                        int jogada = this.jogadores[i].getJogo().jogadaMaquina();
-//                        System.out.println("Jogada escolhida: " + jogada);
-//                        this.jogadores[i].escolherJogada(jogada);
-//                        this.jogadores[i].mostrarJogadasExecutadas();
-//                        System.out.println("-------------------------------------------------------------");
-//                    }
-//                    this.jogadores[i].setJogadas(this.jogadores[i].getJogadas() + 1);
-//                } else {
-//                    System.out.println("Jogador " + this.jogadores[i].getNome() + " já finalizou o jogo!");
-//                }
-//            }
-//
-//            for (int i = 0; i < this.qtdParticipantes; i++) {
-//                if (this.jogadores[i].getJogadas() == 13) {
-//                    chaveFim++;
-//                } else {
-//                    chaveFim = 0;
-//                }
-//            }
-//        } while (chaveFim < this.qtdParticipantes);
-//    }
-
     //Grava em arquivo
     public void gravarEmArquivo() {
         Scanner sc = new Scanner(System.in);
@@ -328,7 +327,7 @@ public class Campeonato implements Serializable {
             oos.close();
             fout.close();
         } catch (Exception e) {
-            System.err.println("Erro: " + e.toString());
+            System.err.println("Erro: " + e);
         }
 
     }
@@ -348,7 +347,7 @@ public class Campeonato implements Serializable {
             this.jogadores = c.jogadores;
             this.qtdParticipantes = c.qtdParticipantes;
         } catch (Exception e) {
-            System.err.println("Erro: " + e.toString());
+            System.err.println("Erro: " + e);
         }
 
     }
@@ -358,16 +357,16 @@ public class Campeonato implements Serializable {
         return jogadores;
     }
 
-    public void setJogadores(Jogador[] jogadores) {
-        this.jogadores = jogadores;
-    }
-
-    public int getQtdParticipantes() {
+      public int getQtdParticipantes() {
         return qtdParticipantes;
     }
 
     public void setQtdParticipantes(int qtdParticipantes) {
         this.qtdParticipantes = qtdParticipantes;
+    }
+
+    public void setJogadores(Jogador jogadores,int posicao) {
+        this.jogadores[posicao] = jogadores;
     }
 
 }

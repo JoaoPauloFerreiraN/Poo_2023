@@ -38,7 +38,20 @@ abstract public class Jogador {
         this.saldo = 100;
     }
 
-    abstract public void jogarDados(int tipoJogo);
+
+
+    public void jogarDados(int tipoJogo){
+         if (tipoJogo == 1) { // Se for jogo general
+             if (this.getJogo()[this.getnJogadas()]  == null) {
+                 this.getJogo()[this.getnJogadas()] = new JogoGeneral(); //cria a instancia do jogo
+             }
+         }else {
+             if(this.getJogo()[this.getnJogadas()] == null){
+                 this.getJogo()[this.getnJogadas()] = new JogoAzar();
+             }
+         }
+         this.getJogo()[this.getnJogadas()].rolarDados();
+     }
 
     public void mostrarJogadasExecutadas(){
         for (int i = 0; i < this.getnJogadas(); i++){
@@ -64,7 +77,7 @@ abstract public class Jogador {
     public String toString() {
         return "Jogador{" +
                 "nome='" + nome + '\'' +
-                ", tipoJogador=";
+                ", tipoJogador=" + tipoJogador + "}\n";
     }
 
     public String getNome() {
@@ -80,10 +93,12 @@ abstract public class Jogador {
     }
 
     public void setSaldo(float saldo) {
-        this.saldo = saldo;
+        this.saldo = (float) ((saldo * 100.0) / 100.0);
     }
 
     public void setJogo(JogoDados jogo, int i) {
         this.jogo[i] = jogo;
     }
+
+
 }

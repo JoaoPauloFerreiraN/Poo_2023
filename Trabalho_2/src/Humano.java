@@ -37,7 +37,7 @@ public class Humano extends Jogador implements JogarComoHumano{
         Scanner sc = new Scanner(System.in);
         System.out.println("Digite uma jogada válida: ");
         int jogada = sc.nextInt();
-        System.out.println("Valor escolhido:"+jogada);
+        System.out.println("Jogada escolhida:"+jogada);
         if((jogada >= 1 && jogada <= 13) && (jogo.getValoresJogadas(jogada - 1) == -1)){
             jogo.pontuarJogada(jogada);
             return 1;
@@ -57,24 +57,5 @@ public class Humano extends Jogador implements JogarComoHumano{
                 ", nBanco='" + nBanco + "'\n";
     }
 
-    @Override
-    public void jogarDados(int tipoJogo) {
-        if (tipoJogo == 1) { // Se for jogo general
-            if (this.getnJogadas() < 10) {//se tiver jogadas livres
-                if (this.getJogo()[this.getnJogadas()]  == null) {
-                    this.getJogo()[this.getnJogadas()] = new JogoGeneral(); //cria a instancia do jogo
-                }
-                this.getJogo()[this.getnJogadas()].rolarDados();
-            }
-        }else {
-            if (this.getnJogadas() < 10) {
-                if(this.getJogo()[this.getnJogadas()] == null){
-                    this.getJogo()[this.getnJogadas()] = new JogoAzar();
-                }
-                this.getJogo()[this.getnJogadas()].rolarDados();
-
-            }
-        }
-    }
 
 }

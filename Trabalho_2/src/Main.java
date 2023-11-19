@@ -35,14 +35,30 @@ public class Main {
                     break;
                 case 4:
                     int opcao2 = 0;
-                    System.out.println("Digite a opcao desejada:\n1-Para todos os jogadores;\n" +
+                    System.out.println("Você deseja visualizar o saldo de qual tipo de jogadores ?\n" +
+                            "Digite a opcao desejada:\n" +
+                            "1- Para todos os jogadores;\n" +
                             "2- Apenas para os jogadores Humanos;\n" +
                             "3- Apenas para os jogadores Maquina;");
                     opcao2 = sc.nextInt();
                     c.imprimeSaldo(opcao2);
                     break;
                 case 5:
-                    c.imprimirExtratosDosResultados();
+                    int opcao3 = 0;
+                    int opcao4 = 0;
+                    System.out.println("Você deseja visualizar o extrato para qual jogo ?" +
+                            "\nDigite a opcao desejada:\n" +
+                            "1- Para todos os jogos;\n" +
+                            "2- Apenas para o Jogo General;\n" +
+                            "3- Apenas para o Jogo de Azar;");
+                    opcao3 = sc.nextInt();
+                    System.out.println("Você deseja visualizar o extrato de qual tipo de jogadores ?\n" +
+                            "Digite a opcao desejada:\n" +
+                            "1- Para todos os jogadores;\n" +
+                            "2- Apenas para os jogadores Humanos;\n" +
+                            "3- Apenas para os jogadores Maquina;");
+                    opcao4 = sc.nextInt();
+                    c.imprimirExtratosDosResultados(opcao3,opcao4);
                     break;
                 case 6:
                     break;

@@ -10,13 +10,10 @@ import java.io.ObjectInputStream;
 public class Campeonato implements Serializable {
     private Jogador[] jogadores;
     private int qtdParticipantes = 0;
-
-
+    
     public Campeonato() {
         this.jogadores = new Jogador[10];
     }
-
-
 
     //Adiciona o jogador ao campeonato
     public void incluirJogador() {
@@ -78,28 +75,140 @@ public class Campeonato implements Serializable {
         }
     }
 
-
-    public void imprimirExtratosDosResultados(){
-        for ( int i = 0; i < this.getQtdParticipantes(); i++){
-            Jogador jogadorAux = this.getJogadores()[i];
-            System.out.printf("\n Jogador: " + jogadorAux.getNome());
-            for (int j = 0; j < jogadorAux.getnJogadas(); j++){
-                JogoDados jogoAux = jogadorAux.getJogo()[j];
-                System.out.print("\n Jogo: ");
-                if ( jogoAux instanceof JogoGeneral ){
-                    System.out.print("Jogo General\n");
-                    jogoAux.jogadaExecutada();
-                    System.out.print("\nValor Apostado: " + jogoAux.getAposta());
-                    if (jogoAux.isResultado()){
-                        System.out.print("\nResultado: Venceu!");
-                    }else{
-                        System.out.print("\nResultado: Perdeu!\n");
+    public void imprimirExtratosDosResultados(int tipoJogo, int tipoJogador){
+        Jogador jogadorAux;
+        switch (tipoJogo) {
+            case 1 -> { // todos
+                if (tipoJogador == 1) {
+                    for (int i = 0; i < this.getQtdParticipantes(); i++) {
+                        jogadorAux = this.getJogadores()[i];
+                        imprimeExtratoTodosJogos(jogadorAux);
+                        System.out.println("Saldo Final: R$" + jogadorAux.getSaldo() + "\n\n");
                     }
-                }else{
-                    System.out.print("Jogo Azar");
+                } else if (tipoJogador == 2) {
+                    for (int i = 0; i < this.getQtdParticipantes(); i++) {
+                        jogadorAux = this.getJogadores()[i];
+                        if (jogadorAux instanceof Humano) {
+                            imprimeExtratoTodosJogos(jogadorAux);
+                            System.out.println("Saldo Final: R$" + jogadorAux.getSaldo() + "\n\n");
+
+                        }
+                    }
+                } else {
+                    for (int i = 0; i < this.getQtdParticipantes(); i++) {
+                        jogadorAux = this.getJogadores()[i];
+                        if (jogadorAux instanceof Maquina) {
+                            imprimeExtratoTodosJogos(jogadorAux);
+                            System.out.println("Saldo Final: R$" + jogadorAux.getSaldo() + "\n\n");
+
+                        }
+                    }
+                }
+            }
+            case 2 -> {
+                if (tipoJogador == 1) {
+                    for (int i = 0; i < this.getQtdParticipantes(); i++) {
+                        jogadorAux = this.getJogadores()[i];
+                        imprimeExtratoJogoGeneral(jogadorAux);
+                        System.out.println("Saldo Final: R$" + jogadorAux.getSaldo() + "\n\n");
+
+                    }
+
+                } else if (tipoJogador == 2) {
+                    for (int i = 0; i < this.getQtdParticipantes(); i++) {
+                        jogadorAux = this.getJogadores()[i];
+                        if (jogadorAux instanceof Humano) {
+                            imprimeExtratoJogoGeneral(jogadorAux);
+                            System.out.println("Saldo Final: R$" + jogadorAux.getSaldo() + "\n\n");
+
+                        }
+                    }
+                } else {
+                    for (int i = 0; i < this.getQtdParticipantes(); i++) {
+                        jogadorAux = this.getJogadores()[i];
+                        if (jogadorAux instanceof Maquina) {
+                            imprimeExtratoJogoGeneral(jogadorAux);
+                            System.out.println("Saldo Final: R$" + jogadorAux.getSaldo() + "\n\n");
+                        }
+                    }
+                }
+            }
+            case 3 -> {
+                if (tipoJogador == 1) {
+                    for (int i = 0; i < this.getQtdParticipantes(); i++) {
+                        jogadorAux = this.getJogadores()[i];
+                        imprimeExtratoAzar(jogadorAux);
+                        System.out.println("Saldo Final: R$" + jogadorAux.getSaldo() + "\n\n");
+
+                    }
+
+                } else if (tipoJogador == 2) {
+                    for (int i = 0; i < this.getQtdParticipantes(); i++) {
+                        jogadorAux = this.getJogadores()[i];
+                        if (jogadorAux instanceof Humano) {
+                            imprimeExtratoAzar(jogadorAux);
+                            System.out.println("Saldo Final: R$" + jogadorAux.getSaldo() + "\n\n");
+                        }
+                    }
+                } else {
+                    for (int i = 0; i < this.getQtdParticipantes(); i++) {
+                        jogadorAux = this.getJogadores()[i];
+                        if (jogadorAux instanceof Maquina) {
+                            imprimeExtratoAzar(jogadorAux);
+                            System.out.println("Saldo Final: R$" + jogadorAux.getSaldo() + "\n\n");
+                        }
+                    }
                 }
             }
         }
+    }
+
+    public void imprimeExtratoTodosJogos(Jogador jogadorAux){
+        System.out.println("Jogador: " + jogadorAux.getNome());
+        for (int j = 0; j < jogadorAux.getnJogadas(); j++) {
+            JogoDados jogoAux = jogadorAux.getJogo()[j];
+            printname(jogadorAux, jogoAux,j);
+        }
+    }
+
+    private void printname(Jogador jogadorAux, JogoDados jogoAux, int j) {
+        printNomeJogo(jogoAux, j);
+        jogoAux.jogadaExecutada();
+        System.out.println("Saldo antes da partida: R$ " +
+                calcSaldo(j, jogadorAux));
+        System.out.println("Valor Apostado: R$ " + jogoAux.getAposta());
+        if (jogoAux.isResultado()) {
+            System.out.println("Resultado: Venceu!\n");
+        } else {
+            System.out.println("Resultado: Perdeu!\n");
+        }
+    }
+
+    public void imprimeExtratoJogoGeneral(Jogador jogadorAux ){
+        JogoDados jogoAux;
+        System.out.println("Jogador: " + jogadorAux.getNome());
+        for (int j = 0; j < jogadorAux.getnJogadas(); j++) {
+            jogoAux = jogadorAux.getJogo()[j];
+            if( jogoAux instanceof JogoGeneral){
+                printname(jogadorAux, jogoAux, j);
+            }
+        }
+
+    }
+
+    public void imprimeExtratoAzar(Jogador jogadorAux ){
+        JogoDados jogoAux;
+        System.out.println("Jogador: " + jogadorAux.getNome());
+        for (int j = 0; j < jogadorAux.getnJogadas(); j++) {
+            jogoAux = jogadorAux.getJogo()[j];
+            if( jogoAux instanceof JogoAzar){
+                printname(jogadorAux, jogoAux, j);
+            }
+        }
+    }
+
+    public void printNomeJogo(JogoDados jogoAux, int j){
+        System.out.println("Jogo " + (j + 1) + " : " + jogoAux.getNomeJogo());
     }
 
     public void executarRodadasApostas(){
@@ -289,60 +398,19 @@ public class Campeonato implements Serializable {
 
     }
 
+    public float calcSaldo(int partida, Jogador jogadorAux){
+        float saldoPartida = jogadorAux.getSaldo();
+        for (int i = jogadorAux.getnJogadas()-1; i >= partida; i--) {
+            if(jogadorAux.getJogo()[i].isResultado()) {
+                saldoPartida = saldoPartida - jogadorAux.getJogo()[i].getAposta();
+            }else {
+                saldoPartida = saldoPartida + jogadorAux.getJogo()[i].getAposta();
+            }
+        }
+        return  (float) (Math.round(saldoPartida * 100.0) / 100.0);
+    }
 
 
-
-//    Printa a cartela na tela
-//    public void mostrarCartela() {
-//        System.out.print("Jogador:");
-//        for (int i = 0; i < this.qtdParticipantes; i++) {
-//            System.out.print("  " + this.jogadores[i].getNome());
-//            if (this.jogadores[i].getTipoJogador() == 1) {
-//                System.out.print("(H)");
-//            } else {
-//                System.out.print("(M)");
-//            }
-//        }
-//        System.out.println();
-//        for (int i = 1; i <= 13; i++) {
-//            System.out.print(i + ":        ");
-//            for (int j = 0; j < this.qtdParticipantes; j++) {
-//                for (int k = 0; k < (this.jogadores[j].getNome().length() / 2); k++) {
-//                    if (k == 0) {
-//                        System.out.print(" ");
-//                    } else {
-//                        System.out.print("   ");
-//
-//                    }
-//                }
-//                if (this.jogadores[j].getJogo().jogadas[i - 1] < 0) {
-//                    System.out.print("-");
-//                } else {
-//                    System.out.print(this.jogadores[j].getJogo().jogadas[i - 1]);
-//                }
-//
-//            }
-//            System.out.println("");
-//        }
-//        System.out.println("---------------------------------------------------");
-//        System.out.print("Total:      ");
-//        for (int i = 0; i < this.qtdParticipantes; i++) {
-//            for (int l = 0; l < (this.jogadores[i].getNome().length() / 2); l++) {
-//                if (l == 0) {
-//                    System.out.print(" ");
-//                } else {
-//                    System.out.print("   ");
-//
-//                }
-//            }
-//            if (this.jogadores[i].totalPontos() < 0) {
-//                System.out.print("-");
-//            } else {
-//                System.out.print(this.jogadores[i].totalPontos());
-//            }
-//        }
-//        System.out.println();
-//    }
 
     //Grava em arquivo
     public void gravarEmArquivo() {

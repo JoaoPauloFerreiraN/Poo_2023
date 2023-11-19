@@ -93,7 +93,7 @@ abstract public class Jogador implements Serializable {
     }
 
     public void setSaldo(float saldo) {
-        this.saldo = (float) ((saldo * 100.0) / 100.0);
+        this.saldo = (float) (Math.round(saldo * 100.0) / 100.0);
     }
 
     public void setJogo(JogoDados jogo, int i) {

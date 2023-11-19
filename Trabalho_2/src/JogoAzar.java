@@ -1,21 +1,11 @@
 import java.io.Serializable;
 
 public class JogoAzar extends JogoDados implements Serializable{
-//    private float valorAposta;
 
     public JogoAzar() {
         super(2,"JogoAzar");
-//        setValorAposta(vA);
     }
 
-//    public float getValorAposta() {
-//        return valorAposta;
-//    }
-//
-//    public void setValorAposta(float valorAposta) {
-//        this.valorAposta = valorAposta;
-//    }
-//
     public void rolarDados(){
         for (int i = 0; i < 2; i++){
             this.getDados()[i].roll();
